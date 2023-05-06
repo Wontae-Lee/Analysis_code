@@ -1,5 +1,6 @@
 """Functions for random sampling"""
 import numpy as np
+from vtk_visualizer.plot3d import plotxyz
 
 
 def uniform_2_sphere(num: int = None):
@@ -32,6 +33,6 @@ def uniform_2_sphere(num: int = None):
 
 if __name__ == '__main__':
     # Visualize sampling
-    from vtk_visualizer.plot3d import plotxyz
+
     rand_2s = uniform_2_sphere(10000)
     plotxyz(rand_2s, block=True)
