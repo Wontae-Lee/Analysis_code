@@ -156,13 +156,31 @@ class KPFCNN(nn.Module):
         return
 
     def forward(self, batch):
+
+        # 먼저 point cloud는 normalized 된 상태이다.
+        # 그렇기 때문에, 뒤에 kernel points를 확인해 보면 알겠지만
+        # kernel points의 중심 0,0에서 최대 diameter를 1로 설정한 이유이다.
+
+
         # Get input features
+        # .clone().detach()를 통하여 복사한 텐서는 기존의 복사의 대상이 된 텐서의 변화에
+        # 영향이 없다.
         x = batch['features'].clone().detach()
+
+        # 이 논문의 저자는 하나의 3d모델에서 source와 target을 분리하여 진행하였기 때문에
+        # pcd가 어느 index에서 분리되었는지 알 필요가 있다.
+        # len_src_c는 그 index로  source와 target을 나눈다.
         len_src_c = batch['stack_lengths'][-1][0]
-        len_src_f = batch['stack_lengths'][0][0]
+        # len_src_f = batch['stack_lengths'][0][0]
         pcd_c = batch['points'][-1]
-        pcd_f = batch['points'][0]
+        # pcd_f = batch['points'][0]
+
+        # len_src_c를 기준으로 src와 tgt를 나눈것을 볼 수 있다.
         src_pcd_c, tgt_pcd_c = pcd_c[:len_src_c], pcd_c[len_src_c:]
+
+        # 여기까지 실제로 refactoring이 필요한 부분이다.
+
+        # 여기서 부터가 정말로 forward부분이다
 
         sigmoid = nn.Sigmoid()
         #################################

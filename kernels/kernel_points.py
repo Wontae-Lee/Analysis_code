@@ -447,7 +447,7 @@ def load_kernels(radius, num_kpoints, dimension, fixed, lloyd=False):
         else:
             phi = (np.random.rand() - 0.5) * np.pi
 
-            # Create the first vector in carthesian coordinates
+            # Create the first vector in cartesian coordinates
             u = np.array([np.cos(theta) * np.cos(phi), np.sin(theta) * np.cos(phi), np.sin(phi)])
 
             # Choose a random rotation angle
